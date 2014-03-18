@@ -48,7 +48,8 @@ loadJsonFromRequestData(char *data)
     return returnCode;
 }
 
-int parseJsonTopics(const json_t *topics)
+int
+parseJsonTopics(const json_t *topics)
 {
     int i;
     int returnCode = 0;
@@ -132,7 +133,7 @@ arg_join(char *query, int argc, const char* argv[], int size)
 void
 print_usage(const char* argv[])
 {
-    printf("Usage: %s [QUERY]\n", argv[0]);
+    printf("Usage: %s QUERY\n", argv[0]);
 }
 
 void
