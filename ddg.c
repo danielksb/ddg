@@ -3,7 +3,7 @@
 #include <jansson.h>
 #include <string.h>
 
-#define BUF_SIZE (24*1024)
+#define BUF_SIZE (128*1024)
 #define MAX_URL_LEN (2048)
 
 long bytesWritten = 0;
