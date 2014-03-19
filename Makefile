@@ -2,7 +2,7 @@
 
 CC=gcc
 EXE=ddg
-SOURCES=*.c
+SOURCES=src/*.c
 OBJECTS=*.o
 INSTALLDIR=$(HOME)/.bin
 CCFLAGS=`pkg-config --cflags libcurl jansson`
@@ -17,4 +17,5 @@ clean:
 	rm -vf $(EXE) $(OBJECTS)
 
 install: build
+	mkdir -p $(INSTALLDIR)
 	cp $(EXE) $(INSTALLDIR)/$(EXE)
