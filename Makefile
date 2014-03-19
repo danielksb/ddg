@@ -1,21 +1,36 @@
-.PHONY: all build clean
+.PHONY: all clean
 
 CC=gcc
 EXE=ddg
-SOURCES=src/*.c
-OBJECTS=*.o
+
 INSTALLDIR=$(HOME)/.bin
-CCFLAGS=`pkg-config --cflags libcurl jansson`
-LINKFLAGS=`pkg-config --libs libcurl jansson`
+VPATH=src
+BUILDDIR=build
 
-all: build
+CFLAGS=`pkg-config --cflags libcurl jansson`
+LDFLAGS=`pkg-config --libs libcurl jansson`
 
-build: $(SOURCES)
-	$(CC) -o $(EXE) $(CCFLAGS) $(LINKFLAGS) $(SOURCES)
+all: $(BUILDDIR)/$(EXE)
+	cp $(BUILDDIR)/$(EXE) .
+
+%: %.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+
+$(BUILDDIR)/%.o: %.c
+	$(CC) $(CFLAGS) $(LDFLAGS) -c -o $@ $^
+
+$(BUILDDIR):
+	mkdir -p $@
 
 clean:
-	rm -vf $(EXE) $(OBJECTS)
+	rm -rvf $(EXE) $(BUILDDIR)
 
 install: build
 	mkdir -p $(INSTALLDIR)
-	cp $(EXE) $(INSTALLDIR)/$(EXE)
+	cp $(BUILDDIR)/$(EXE) $(INSTALLDIR)/$(EXE)
+
+# Dependencies
+#
+
+$(BUILDDIR)/$(EXE): $(BUILDDIR)/ddg.o $(BUILDDIR)/http.o | $(BUILDDIR)
+$(BUILDDIR)/ddg.o $(BUILDDIR)/http.o: | $(BUILDDIR)
