@@ -32,5 +32,7 @@ install: build
 # Dependencies
 #
 
-$(BUILDDIR)/$(EXE): $(BUILDDIR)/ddg.o $(BUILDDIR)/http.o | $(BUILDDIR)
-$(BUILDDIR)/ddg.o $(BUILDDIR)/http.o: | $(BUILDDIR)
+OBJS=$(BUILDDIR)/ddg.o $(BUILDDIR)/http.o $(BUILDDIR)/searchresult.o $(BUILDDIR)/jsonparse.o 
+
+$(BUILDDIR)/$(EXE): $(OBJS)| $(BUILDDIR)
+$(OBJS): | $(BUILDDIR)

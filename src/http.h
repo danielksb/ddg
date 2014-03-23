@@ -1,9 +1,7 @@
 #ifndef DDG_HTTP_H_
 #define DDG_HTTP_H_
 
-#include <curl/curl.h>
-#include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 
 typedef struct {
     char * data;

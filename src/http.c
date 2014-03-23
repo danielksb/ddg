@@ -1,5 +1,7 @@
+#include <stdio.h>
+#include <curl/curl.h>
+#include <string.h>
 #include "http.h"
-#include <stdlib.h>
 
 static size_t
 write_callback(void *content, size_t size, size_t nmemb, void *userdata)
