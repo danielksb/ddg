@@ -1,31 +1,28 @@
 #include "http.h"
-
-static long bytesWritten = 0;
-static size_t max_data_buffer_size = 0;
+#include <stdlib.h>
 
 static size_t
-write_callback(void *ptr, size_t size, size_t nmemb, void *userdata)
+write_callback(void *content, size_t size, size_t nmemb, void *userdata)
 {
-    size_t sLen = size * nmemb;
+    size_t newsize = size * nmemb;
 
-    // if this is zero, then it's done
-    // we don't do any special processing on the end of the stream
-    if (sLen > 0) {
-        // >= to account for terminating null
-        if (bytesWritten + sLen >= max_data_buffer_size) {
-            fprintf(stderr, "Buffer size exceeded.\n  Buffer length: %d\n  Current length: %d\n  Bytes to write: %d\n", max_data_buffer_size, bytesWritten, sLen);
-            return 0;
-        }
+    ResponseData * response = (ResponseData *) userdata;
 
-        memcpy(&((char*)userdata)[bytesWritten], ptr, sLen);
-        bytesWritten += sLen;
+    response->data = (char *) realloc(response->data, response->size + newsize + 1);
+    if (response->data == NULL) {
+        fprintf(stderr, "http:write_callback: not enough memory (realloc failed)\n");
+        return 0;
     }
 
-    return sLen;
+    memcpy(&(response->data[response->size]), content, newsize);
+    response->size += newsize;
+    response->data[response->size] = 0;
+
+    return newsize;
 }
 
 int
-run_ddg_http_request(const char* query, char * data, size_t data_size)
+run_ddg_http_request(const char* query, ResponseData * data)
 {
     const int MAX_URL_LEN = 2048 * sizeof(char);
     CURL *curl;
@@ -34,7 +31,6 @@ run_ddg_http_request(const char* query, char * data, size_t data_size)
     char *escaped_query;
     char url[MAX_URL_LEN];
     memset(url, 0, MAX_URL_LEN);
-    max_data_buffer_size = data_size;
 
     curl_global_init(CURL_GLOBAL_ALL);
 
@@ -60,8 +56,7 @@ run_ddg_http_request(const char* query, char * data, size_t data_size)
         returnCode = 0;
         fprintf(stderr, "curl_easy_init() failed\n");
     }
-    bytesWritten = 0;
-    max_data_buffer_size = 0;
+    curl_global_cleanup();
     return returnCode;
 }
 

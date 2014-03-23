@@ -5,12 +5,17 @@
 #include <stdio.h>
 #include <string.h>
 
+typedef struct {
+    char * data;
+    size_t size;
+} ResponseData;
+
 /**
- * Sends a search query to ddg and writes the result into data. This function will block
+ * Sends a search query to ddg and writes the result into ResponseData. This function will block
  * until all bytes are written.
  * @return 1 on success, 0 otherwise
  */
 int
-run_ddg_http_request(const char* query, char * data, size_t data_size);
+run_ddg_http_request(const char* query, ResponseData * data);
 
 #endif

@@ -4,7 +4,6 @@
 #include "http.h"
 
 #define MAX_QUERY_LEN (2048)
-#define BUF_SIZE (128*1024)
 
 int
 loadJsonFromRequestData(char *data)
@@ -117,17 +116,19 @@ int
 main(int argc, const char* argv[])
 {
     int returnCode = 0;
-    char data[BUF_SIZE];
     char query[MAX_QUERY_LEN];
+    ResponseData response_data;
+    response_data.data = (char *) malloc(1);
+    response_data.data[0] = 0;
+    response_data.size = 0;
 
     if (argc > 1) {
-        memset(data, 0, BUF_SIZE);
         memset(query, 0, MAX_QUERY_LEN);
 
         arg_join(query, argc, argv, MAX_QUERY_LEN);
 
-        if (run_ddg_http_request(query, data, BUF_SIZE)) {
-            returnCode = loadJsonFromRequestData(data);
+        if (run_ddg_http_request(query, &response_data)) {
+            returnCode = loadJsonFromRequestData(response_data.data);
             //printf("%s\n", data);
         } else {
             returnCode = 1;
@@ -136,6 +137,7 @@ main(int argc, const char* argv[])
         print_usage(argv);
         returnCode = 1;
     }
+    free(response_data.data);
     return returnCode;
 }
 
