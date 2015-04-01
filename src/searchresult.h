@@ -3,7 +3,7 @@
 
 #define MAX_URL_LEN (2048)
 
-typedef struct SearchResult_t{
+typedef struct SearchResult_t {
     char * title;
     char * url;
     char * topic;

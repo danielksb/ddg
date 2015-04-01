@@ -14,7 +14,7 @@ arg_join(char *query, int argc, const char* argv[], int size)
   int offset = 0;
   for (i = 1; i < argc; ++i) {
       const char* arg = argv[i];
-      const arglen = strlen(arg);
+      const int arglen = strlen(arg);
       strncpy(query+offset, arg, arglen);
       offset += arglen;
       query[offset] = ' ';
@@ -47,21 +47,22 @@ main(int argc, const char* argv[])
 
         arg_join(query, argc, argv, MAX_QUERY_LEN);
 
-        if (run_ddg_http_request(query, &response_data)) {
-            search_result = parse_response_data(&response_data);
-            if (search_result) {
-                returnCode = 0;
-                print_search_results(search_result);
-            } else {
-                returnCode = 1;
-            }
-        } else {
+        if (!run_ddg_http_request(query, &response_data)) {
             returnCode = 1;
+            goto cleanup;
         }
+        search_result = parse_response_data(&response_data);
+        if (!search_result) {
+            returnCode = 1;
+            goto cleanup;
+        }
+        print_search_results(search_result);
+        search_result_free(search_result);
     } else {
         print_usage(argv);
         returnCode = 1;
     }
+cleanup:
     free(response_data.data);
     return returnCode;
 }
