@@ -10,8 +10,8 @@ BUILDDIR=build
 CFLAGS=`pkg-config --cflags libcurl jansson`
 LDFLAGS=`pkg-config --libs libcurl jansson`
 
-all: $(BUILDDIR)/$(EXE)
-	cp $(BUILDDIR)/$(EXE) .
+$(EXE): $(BUILDDIR)/$(EXE)
+	cp $< $@
 
 %: %.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
