@@ -1,44 +1,53 @@
-ddg
-===
+# ddg
 
 duckduckgo command line tool
 
-
 Small c programme using curl and jansson to retrieve search results from duckduckgo and display them on the command line.
 
-Usage: ddg QUERY
+Usage: `ddg QUERY`
 
-Example
-===
+## Example
 
-./ddg apache
+    ./ddg apache
 
 Output:
 
-== Main ==
+    == Main ==
 
-Apache is the name of a group of related Native American tribes or a member of these tribes.
-(http://duckduckgo.com/Apache)
+    Apache is the name of a group of related Native American tribes or a member of these tribes.
+    (http://duckduckgo.com/Apache)
 
-Boeing AH-64 Apache, an attack helicopter in service with the United States Army
-(http://duckduckgo.com/Boeing_AH-64_Apache)
+    Boeing AH-64 Apache, an attack helicopter in service with the United States Army
+    (http://duckduckgo.com/Boeing_AH-64_Apache)
 
-Apache HTTP Server, web server software
-(http://duckduckgo.com/Apache_HTTP_Server)
+    Apache HTTP Server, web server software
+    (http://duckduckgo.com/Apache_HTTP_Server)
 
-Apache language, a subfamily of Athabaskan languages spoken by various groups of Apache and Navajo peoples
-(http://duckduckgo.com/Apache_language)
+    Apache language, a subfamily of Athabaskan languages spoken by various groups of Apache and Navajo peoples
+    (http://duckduckgo.com/Apache_language)
 
-== Arts and entertainment == 
+    == Arts and entertainment == 
 
-Apache (dance), a form of dance in the 1920s
-(http://duckduckgo.com/Apache_(dance))
+    Apache (dance), a form of dance in the 1920s
+    (http://duckduckgo.com/Apache_(dance))
 
-Apache (dance move), a dance move used in Lindy Hop, West Coast Swing, and Salsa
-(http://duckduckgo.com/texas_Tommy_(dance_move))
+    Apache (dance move), a dance move used in Lindy Hop, West Coast Swing, and Salsa
+    (http://duckduckgo.com/texas_Tommy_(dance_move))
 
-"Apache" (instrumental), a 1960 instrumental by the Shadows
-(http://duckduckgo.com/Apache_(instrumental))
+    "Apache" (instrumental), a 1960 instrumental by the Shadows
+    (http://duckduckgo.com/Apache_(instrumental))
 
-.... and so on
+    .... and so on
 
+# Requirements and installation
+A C compiler environment, as well as `libcurl` and the `jansson` C libraries for handling http traffic and JSON.
+
+The requirements can be installed on Debian GNU/Linux with:
+
+    sudo apt install build-essential libcurl4-openssl-dev libjansson-dev
+
+Or on macOS and [Homebrew](https://brew.sh) with:
+
+    brew install gcc curl jansson
+
+Compile `ddg` by running `make` and optionally install with `make install`.
